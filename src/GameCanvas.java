@@ -11,7 +11,7 @@ public class GameCanvas extends JPanel {
     int playerX = 354;
     int playerY = 500;
     int backY = -2585;
-    int enemyY = -180;
+    int enemyY = 40;
     boolean rightPressed;
     boolean upPressed;
     boolean downPressed;
@@ -81,12 +81,12 @@ public class GameCanvas extends JPanel {
 
         }
     }
-    public void run(){
+    public void run() {
         int vy = 0;
         int vx = 0;
-        if (rightPressed){
-            if (playerX < 354){
-                vx +=5;
+        if (rightPressed) {
+            if (playerX < 354) {
+                vx += 5;
             }
 
         }
@@ -105,21 +105,22 @@ public class GameCanvas extends JPanel {
                 vy += 5;
             }
         }
-        if (backY == 0){
+        if (backY == 0) {
             backY -= 2595;
-        }else {
+        } else {
             backY += 5;
         }
         // Hình như logic của em bị sai :(. Anh xem xong hộ em đoạn này nhé.
-//        if (enemyY == 260){
-//            enemyY -=2;
-//        }
-//        else {
-//            enemyY +=5;
-//        }
 
-        playerY = playerY + vy;
-        playerX = playerX + vx;
-        enemyY +=5;
+            if (enemyY<=40) {
+                enemyY += 10;
+            } else{
+                enemyY --;
+            }
+
+
+            playerY = playerY + vy;
+            playerX = playerX + vx;
+
+        }
     }
-}
