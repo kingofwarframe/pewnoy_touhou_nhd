@@ -1,5 +1,6 @@
 package touhou;
 
+import bases.GameObject;
 import bases.Utils;
 
 import javax.rmi.CORBA.Util;
@@ -8,10 +9,9 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-public class Player {
-   public int x = 354;
-    public int y = 500;
-    BufferedImage  image;
+public class Player extends GameObject {
+
+
     boolean rightPressed;
     boolean upPressed;
     boolean downPressed;
@@ -23,13 +23,13 @@ public class Player {
     final int Top = 0;
     final int Bottom = 500;
     long shootingTimer = System.nanoTime();
-    long delay = 300;
+    long delay = 200;
     public Player(){
+          x = 354;
+          y = 500;
         image = Utils.loadImage("assets/images/players/straight/touhou resize.png");
     }
-    public void render(Graphics backGraphics){
-        backGraphics.drawImage(image, x, y, null);
-    }
+
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             rightPressed = true;
@@ -46,6 +46,7 @@ public class Player {
         if (e.getKeyCode() == KeyEvent.VK_X) {
             xPressed = true;
         }
+
     }
 
     public void keyReleased(KeyEvent e) {
@@ -65,8 +66,15 @@ public class Player {
         if (e.getKeyCode() == KeyEvent.VK_X) {
             xPressed = false;
         }
+
     }
     public void run() {
+        move();
+        shoot();
+
+    }
+
+    private void move() {
         int vy = 0;
         int vx = 0;
         if (rightPressed) {
@@ -91,12 +99,14 @@ public class Player {
 
         }
 
+
         y = y + vy;
         x = x + vx;
         x = (int)clamp(x, Left, Right);
         y = (int)clamp(y, Top, Bottom);
     }
-    public void shoot(ArrayList<PlayerSpell> spells){
+
+    public void shoot(){
         if (xPressed) {
             long shoot = (System.nanoTime() - shootingTimer) / 2000000;
             if(shoot >delay) {
@@ -104,7 +114,8 @@ public class Player {
                     PlayerSpell newSpell = new PlayerSpell();
                     newSpell.x = x;
                     newSpell.y = y;
-                    spells.add(newSpell);
+                    GameObject.add(newSpell);
+                    shootingTimer = System.nanoTime();
                 }
             }}
 
