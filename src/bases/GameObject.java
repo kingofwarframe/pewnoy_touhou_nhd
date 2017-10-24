@@ -18,6 +18,7 @@ public class GameObject {
         for (GameObject gameObject: gameObjects){
             if (gameObject.isActive) {
                 gameObject.run();
+                
             }
         }
         gameObjects.addAll(newGameObjects);
