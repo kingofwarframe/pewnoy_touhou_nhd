@@ -6,8 +6,7 @@ public class Vector2D {
     public float y;
 
     public Vector2D() {
-        x = 0;
-        y = 0;
+        this(0,0);
     }
 
     public Vector2D(float x, float y) {
@@ -30,6 +29,9 @@ public class Vector2D {
     public void set(float x, float y) {
         this.x = x;
         this.y = y;
+    }
+    public void set(Vector2D other){
+        set(other.x,other.y);
     }
 
     public Vector2D clone() {

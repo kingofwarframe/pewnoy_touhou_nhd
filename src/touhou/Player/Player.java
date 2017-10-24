@@ -1,13 +1,11 @@
-package touhou;
+package touhou.Player;
 
 import bases.GameObject;
 import bases.Utils;
+import bases.Vector2D;
+import bases.physics.BoxCollider;
 
-import javax.rmi.CORBA.Util;
-import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 public class Player extends GameObject {
 
@@ -24,9 +22,10 @@ public class Player extends GameObject {
     final int Bottom = 500;
     long shootingTimer = System.nanoTime();
     long delay = 200;
+    public BoxCollider boxCollider;
     public Player(){
-          x = 354;
-          y = 500;
+          position.set(384,500);
+          this.boxCollider = new BoxCollider(10,10);
         image = Utils.loadImage("assets/images/players/straight/touhou resize.png");
     }
 
@@ -73,37 +72,35 @@ public class Player extends GameObject {
         shoot();
 
     }
-
+    Vector2D velocity = new Vector2D();
     private void move() {
-        int vy = 0;
-        int vx = 0;
+        velocity.set(0,0);
         if (rightPressed) {
 
-            vx += Speed;
+            velocity.x += Speed;
 
 
         }
         if (leftPressed) {
 
-            vx -= Speed;
+            velocity.x -= Speed;
 
         }
         if (upPressed) {
 
-            vy -= Speed;
+            velocity.y -= Speed;
 
         }
         if (downPressed) {
 
-            vy += Speed;
+            velocity.y += Speed;
 
         }
+        position.addUp(velocity);
 
 
-        y = y + vy;
-        x = x + vx;
-        x = (int)clamp(x, Left, Right);
-        y = (int)clamp(y, Top, Bottom);
+        position.x = (int)clamp(position.x, Left, Right);
+        position.y = (int)clamp(position.y, Top, Bottom);
     }
 
     public void shoot(){
@@ -112,8 +109,7 @@ public class Player extends GameObject {
             if(shoot >delay) {
                 {
                     PlayerSpell newSpell = new PlayerSpell();
-                    newSpell.x = x;
-                    newSpell.y = y;
+                    newSpell.position.set(this.position);
                     GameObject.add(newSpell);
                     shootingTimer = System.nanoTime();
                 }
@@ -128,5 +124,9 @@ public class Player extends GameObject {
             return max;
         }
         return value;
+    }
+
+    public void getHit() {
+        isActive = false;
     }
 }
